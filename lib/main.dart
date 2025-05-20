@@ -14,7 +14,15 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const MyApp());
+
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => HomeScreenProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => HouseDetailsProvider(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,22 +34,12 @@ class MyApp extends StatelessWidget {
       data: MediaQuery.of(context).copyWith(
         textScaler: const TextScaler.linear(1.0),
       ),
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => HomeScreenProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => HouseDetailsProvider(),
-          )
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: CustomColors.backgroundBg,
-          ),
-          home: const HomeScreen(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: CustomColors.backgroundBg,
         ),
+        home: const HomeScreen(),
       ),
     );
   }
